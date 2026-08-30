@@ -1,0 +1,13 @@
+﻿ARCHITECTURE 1: Simple U-Net Multiclass (baseline, no pretraining, no attention)
+================================================================================
+Preprocessing: CLAHE applied to every image (train/val/test)
+Segmentation: EX + SE (exudates only)
+Training: 40 epochs, from scratch, GPU (RTX 2050)
+
+Per-lesion Dice: EX 0.6934, SE 0.5511
+Mean Dice: 0.6223
+Accuracy: 0.4563
+Quadratic Kappa: 0.4747
+
+Note: Model never predicted grade 1 on any test sample -- weakest class,
+likely due to no pretraining + limited epochs for the rarest DR grade.

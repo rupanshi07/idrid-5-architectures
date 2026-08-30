@@ -1,0 +1,11 @@
+﻿venv/
+__pycache__/
+*.pyc
+checkpoints_*/
+*.pth
+Dataset/
+Balanced_Training_Images/
+Augmented_Seg_Images/
+Augmented_Seg_Masks/
+.DS_Store
+venv311/

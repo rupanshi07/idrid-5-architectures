@@ -1,0 +1,13 @@
+﻿ARCHITECTURE 2: U-Net + ResNet34 Backbone (pretrained)
+================================================================================
+Preprocessing: CLAHE applied to every image (train/val/test)
+Segmentation: EX + SE (exudates only)
+Training: 40 epochs, ImageNet-pretrained encoder, GPU (RTX 2050)
+
+Per-lesion Dice: EX 0.7692, SE 0.6422
+Mean Dice: 0.7057
+Accuracy: 0.5437
+Quadratic Kappa: 0.6637
+
+Comparison vs Architecture 1 (no pretraining): +0.083 Dice, +0.189 Kappa --
+demonstrates clear benefit of transfer learning on this small dataset.
