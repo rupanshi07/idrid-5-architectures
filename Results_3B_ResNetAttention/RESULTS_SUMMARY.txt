@@ -1,0 +1,10 @@
+﻿ARCHITECTURE 3B: Pretrained ResNet34 Encoder + SE Blocks + Attention Gates
+================================================================================
+Mean Dice: 0.7044 (EX 0.7669, SE 0.6419)
+Accuracy: 0.6019   Quadratic Kappa: 0.7238  (BEST result so far)
+
+FINDING: Attention on top of a pretrained encoder gave clear, genuine
+improvement over Architecture 2 alone (Kappa 0.6637 -> 0.7238). This
+model is the first to correctly predict grade 1 at all. Demonstrates
+attention adds real value when the underlying encoder already has a
+strong feature foundation from pretraining.

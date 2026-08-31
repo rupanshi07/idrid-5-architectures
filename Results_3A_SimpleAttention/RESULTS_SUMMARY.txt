@@ -1,0 +1,11 @@
+﻿ARCHITECTURE 3A: Simple (from-scratch) Encoder + SE Blocks + Attention Gates
+================================================================================
+Mean Dice: 0.4017 (EX 0.7301, SE 0.0734)
+Accuracy: 0.4854   Quadratic Kappa: 0.5938
+
+FINDING: Attention REGRESSED performance vs Architecture 1 baseline (Dice
+0.6223 -> 0.4017). SE Dice collapsed almost entirely. Likely cause: a
+from-scratch encoder with limited data/epochs lacks a strong enough
+feature foundation for attention layers to build on -- the added
+parameters and optimization complexity hurt more than helped for the
+harder lesion type (soft exudates).
