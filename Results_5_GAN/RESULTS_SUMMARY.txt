@@ -1,0 +1,18 @@
+﻿ARCHITECTURE 5: New Innovation -- Adversarial Segmentation Refinement (GAN)
+================================================================================
+Generator: Architecture 3B (ResNet34 + SE blocks + Attention Gates)
+Discriminator: 6-layer PatchGAN, judges (image, mask) pairs as real/fake
+Training: Adam for both G and D, adversarial weight 0.1, full precision (no AMP)
+
+Per-lesion Dice: EX 0.7362, SE 0.6084
+Mean Dice: 0.6723
+Accuracy: 0.5922
+Quadratic Kappa: 0.7557  (BEST classification result across all 5 architectures)
+
+FINDING: Adding an adversarial loss on top of the best-performing generator
+(Architecture 3B) improved classification Kappa further (0.7238 -> 0.7557)
+and notably improved grade-4 (severe DR) detection, the most clinically
+important class. Segmentation Dice was strong but slightly below 3B alone
+(0.6723 vs 0.7044), suggesting the adversarial objective traded a small
+amount of raw pixel-overlap accuracy for better overall structural/
+classification coherence.
