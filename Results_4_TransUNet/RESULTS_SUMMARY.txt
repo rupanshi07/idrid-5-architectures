@@ -1,0 +1,13 @@
+﻿ARCHITECTURE 4: TransUNet (Hybrid CNN + Transformer Bottleneck, no pretraining)
+================================================================================
+Mean Dice: 0.5932 (EX 0.7310, SE 0.4554)
+Accuracy: 0.2913   Quadratic Kappa: 0.4734
+
+FINDING: Segmentation performance is reasonable (between Arch 1 and Arch 2),
+but classification accuracy collapsed to near-random (29%). Likely cause:
+Vision Transformers are known to be data-hungry and typically require
+large-scale pretraining (e.g. ImageNet-21k) to learn useful global
+representations -- with only 680 training images and no pretraining, the
+transformer bottleneck could not learn a discriminative representation
+for 5-class DR grading. This matches well-documented ViT literature on
+small-dataset performance without pretraining.
