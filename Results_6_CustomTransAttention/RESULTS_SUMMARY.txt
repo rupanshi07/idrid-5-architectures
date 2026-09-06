@@ -1,0 +1,41 @@
+﻿ARCHITECTURE 6: Custom CNN Encoder + TransUNet Bottleneck + Attention-Gated Decoder
+================================================================================
+Three variants tested, all showing classification collapse:
+
+v1 (CLS token classification):     Dice 0.6717, Acc 29.13%, Kappa 0.5782
+v2 (warm-started from Arch 4):     Dice 0.6292, Acc 43.69%, Kappa 0.6045
+v3 (dual-pathway: CLS + CNN pool): Dice 0.5838, Acc 28.16%, Kappa 0.5638
+
+FINDING: Across all three variants, the transformer bottleneck's
+classification pathway consistently collapsed to predicting only 2-3
+of the 5 DR grades, regardless of classification head design, warm-
+starting, or combining transformer features with CNN-pooled features.
+This is consistent with well-documented Vision Transformer literature:
+ViTs require either much larger training datasets or large-scale
+pretraining (e.g. ImageNet-21k) to learn fine-grained class boundaries
+reliably. With only ~680 training images and no transformer pretraining,
+this architecture could not match the classification performance of
+CNN-based architectures in this project (best: Architecture 5 at
+Kappa 0.7557).
+
+Segmentation performance stayed reasonable across all three variants
+(Dice 0.58-0.67), since segmentation benefits from direct, dense
+pixel-level supervision that classification lacks.
+
+CONCLUSION: For this dataset size and compute budget, a CNN-based
+architecture with a pretrained (or well-tuned attention-augmented)
+encoder outperforms a transformer-bottleneck architecture for
+classification. Architecture 5 (GAN-refined Architecture 3B) remains
+the best overall model in this project.
+
+
+v4 (enhanced encoder: ResBlock + SE attention, deeper capacity): Dice 0.6594, Acc 34.95%, Kappa 0.5377
+Best class-spread across all versions (all 5 grades predicted at least once), but aggregate Kappa did not exceed v2.
+
+FINAL CONCLUSION (4 variants tested): Classification performance for this
+architecture consistently plateaus at Kappa 0.54-0.60 regardless of
+classification head design, warm-starting, or encoder strength. This
+replicated ceiling across 4 structurally different fixes is strong,
+well-supported evidence that transformer-based classification requires
+substantially more data or large-scale pretraining to compete with
+CNN-based architectures at this dataset size.
