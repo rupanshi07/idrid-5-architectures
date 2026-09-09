@@ -1,0 +1,12 @@
+﻿ARCHITECTURE 7A: Pretrained Swin Transformer-Tiny + SE Blocks + Attention Gates
+================================================================================
+Mean Dice: 0.6941 (EX 0.7215, SE 0.6668 -- best SE score in the project)
+Accuracy: 0.4272   Quadratic Kappa: 0.7428 (2nd best in project, after Arch 5 GAN 0.7557)
+
+FINDING: Swin-T's hierarchical, window-based pretraining gave strong
+results despite lower raw accuracy than ResNet-based models -- nearly
+all classification errors were near-diagonal (adjacent grade), which
+is why Kappa stayed high (0.7428) even though exact-match accuracy was
+lower (42.72%). This is a genuinely different error profile than the
+CNN-based architectures, worth noting: Swin appears to produce "softer,"
+more clinically-reasonable mistakes rather than wildly wrong predictions.

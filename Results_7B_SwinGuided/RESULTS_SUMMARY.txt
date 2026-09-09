@@ -1,0 +1,11 @@
+﻿ARCHITECTURE 7B: Swin Transformer + SE + Attention Gates + Segmentation-Guided Classifier
+================================================================================
+Mean Dice: 0.6745 (EX 0.7254, SE 0.6236)
+Accuracy: 0.4660   Quadratic Kappa: 0.7193
+
+FINDING: Using the predicted exudate mask to guide classification gave a
+solid, stable result but did not outperform 7A (plain Swin+Attention,
+Kappa 0.7428) or Architecture 5 (GAN, Kappa 0.7557). The segmentation-
+guidance idea is sound but did not provide additional benefit here,
+likely because Swin''s SE-attended features already capture most of
+the relevant lesion information implicitly.
