@@ -1,0 +1,20 @@
+﻿FINAL MODEL: Ensemble of Architecture 5 (GAN) + Architecture 7A (Swin + Attention)
+================================================================================
+Method: Average sigmoid probabilities for segmentation, average softmax
+probabilities for classification, across both models' predictions.
+No retraining required -- pure inference-time combination.
+
+Per-lesion Dice: EX 0.7625, SE 0.6571
+Mean Dice: 0.7098  (best segmentation result across ALL architectures)
+Accuracy: 0.4854
+Quadratic Kappa: 0.7730  (best classification agreement across ALL architectures)
+
+CONCLUSION: After testing 9+ individual architectures (simple U-Net, ResNet
+backbone, attention mechanisms, custom transformer bottleneck, TransUNet,
+GAN-based adversarial refinement, and Swin Transformer variants), each
+landing in a similar 0.55-0.71 Dice / 0.26-0.76 Kappa range depending on
+design, ensembling the two best-performing, most complementary models
+(GAN and Swin+Attention) produced the best overall result. This
+demonstrates that model combination, not further single-architecture
+tuning, was the most effective final lever for this dataset and compute
+budget.
