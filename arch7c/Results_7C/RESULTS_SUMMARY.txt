@@ -1,0 +1,12 @@
+﻿ARCHITECTURE 7C: Swin + SE + Attention Gates (Residual decoder) + Bounded EX-Gate + Dual-Pooling Ordinal Classifier
+================================================================================
+Mean Dice: 0.5489 (EX 0.6131, SE 0.4847) -- weakest Swin-based segmentation result
+Accuracy: 0.5049   Quadratic Kappa: 0.7010 (3rd best in project)
+
+FINDING: Differential learning rates (encoder 1e-5, decoder 1e-4, classifier
+2e-4) successfully avoided the classification collapse seen in the
+non-differential-LR ordinal attempt (7A-ordinal-v1, Kappa 0.2576 -> 0.7010
+here). However, segmentation underperformed compared to 7A/7B despite
+using the same Swin encoder -- likely the added ResidualConvBlock
+parameters in the decoder needed more than 40 epochs at batch_size=1 to
+fully converge.
