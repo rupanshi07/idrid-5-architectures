@@ -1,0 +1,16 @@
+﻿ARCHITECTURE 7A v3: Faculty-guided improvements (differential LR, freeze/unfreeze,
+warmup+cosine schedule, attention-pooling multi-scale classifier, deep supervision)
+================================================================================
+Mean Dice: 0.6981 (EX 0.7229, SE 0.6734) -- flat vs original 7A (0.6941)
+Accuracy: 0.6214 (+0.194 vs original 7A's 0.4272 -- BEST accuracy in project)
+Quadratic Kappa: 0.7185 (-0.024 vs original 7A's 0.7428)
+
+FINDING: Faculty-recommended training strategy changes substantially
+improved raw classification accuracy and produced more balanced
+predictions across all 5 DR grades (first model to correctly predict
+both grade 1 and grade 4 cases). However, Kappa slightly decreased and
+Dice remained flat, falling short of the targeted 0.75-0.80 Dice /
+0.78-0.80 Kappa range. This suggests the training-strategy improvements
+helped exact-match classification accuracy, but the remaining errors
+became marginally more severe on average, and segmentation architecture
+may be near its practical ceiling for this dataset size.
