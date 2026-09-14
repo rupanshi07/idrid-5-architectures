@@ -1,0 +1,19 @@
+﻿ARCHITECTURE 7D: Shared Bottleneck Transformer + Segmentation-Guided Classifier
+================================================================================
+Mean Dice: 0.6965 (EX 0.7301, SE 0.6630) -- solid, comparable to other Swin variants
+Accuracy: 0.2816   Quadratic Kappa: 0.3688 (COLLAPSED)
+
+FINDING: This is the THIRD architecture in this project where a shared or
+heavily-coupled Transformer bottleneck caused classification to collapse
+while segmentation remained solid (following 7A-Ordinal-v1 and v2). The
+design made the bottleneck Transformer serve both segmentation (needs
+fine spatial detail) and classification (needs global summary)
+simultaneously -- this appears to create a harder, competing optimization
+problem than keeping the two pathways more separate, as in the
+successful 7A and 7A-v3 designs. This is a well-evidenced, replicated
+finding: shared bottleneck representations for joint seg+cls tasks are
+harder to train successfully than task-specific branches, at least
+under this dataset size and compute budget.
+
+Best faculty-guided result remains 7A v3 (Dice 0.6981, Acc 0.6214, Kappa 0.7185).
+Best overall project result remains the GAN+7A ensemble (Dice 0.7098, Kappa 0.7730).
