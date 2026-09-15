@@ -1,0 +1,20 @@
+﻿ARCHITECTURE 7E: 7A-v3 + Bottleneck Transformer ONLY (isolated per faculty's incremental methodology)
+================================================================================
+vs 7A v3 baseline:
+  Mean Dice: 0.6981 -> 0.7065 (+0.0084, best faculty-guided result)
+  Accuracy: 0.6214 -> 0.6602 (+0.0388, BEST accuracy in entire project)
+  Quadratic Kappa: 0.7185 -> 0.6483 (-0.0702)
+
+FINDING: Adding the bottleneck Transformer in isolation (everything else
+held identical to 7A v3) improved segmentation and raw accuracy, but
+introduced a small number of severe classification errors (e.g. true
+grade 0 predicted as grade 4), which disproportionately hurt Kappa due
+to its squared-distance penalty. Critically, this did NOT reproduce the
+catastrophic collapse seen in Architecture 7D (Kappa 0.37) -- confirming
+the bottleneck Transformer itself is not the cause of that collapse.
+The failure in 7D is therefore isolated to the segmentation-guided
+classification component added alongside it, not the shared bottleneck.
+
+Next step per faculty methodology: add soft (non-thresholded) segmentation
+guidance to classification, on top of THIS checkpoint, as the next single
+isolated variable.
