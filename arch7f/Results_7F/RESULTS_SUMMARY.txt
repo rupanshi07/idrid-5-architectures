@@ -1,0 +1,37 @@
+﻿ARCHITECTURE 7F: Full Faculty Specification (Bottleneck Transformer + Soft
+Segmentation-Guided Fusion + Dedicated Classification Transformer with
+Attention Pooling + Dice/Focal-Tversky Segmentation Loss + Hybrid
+CE+Ordinal Classification Loss + Class Weighting + Deep Supervision)
+================================================================================
+Mean Dice: 0.6947 (EX 0.7239, SE 0.6654)
+Accuracy: 0.4757
+Quadratic Kappa: 0.6681
+
+FULL PROGRESSION (faculty-guided chain):
+  7A       Dice 0.6941  Acc 0.4272  Kappa 0.7428
+  7A-v3    Dice 0.6981  Acc 0.6214  Kappa 0.7185
+  7E       Dice 0.7065  Acc 0.6602  Kappa 0.6483
+  7F       Dice 0.6947  Acc 0.4757  Kappa 0.6681
+
+FINDING: 7F combined six new components simultaneously (soft mask fusion,
+dedicated classification transformer, attention pooling, Focal-Tversky
+loss, hybrid CE+ordinal loss, class weighting) rather than isolating one
+variable at a time, unlike the successful 7E step. Result: Kappa
+partially recovered vs 7E (+0.02) but did NOT reach the 0.72-0.75+
+target, while accuracy and Dice both regressed from 7E's levels. This
+does not meet the specific success condition (recover Kappa while
+keeping 7E's Dice/accuracy gains).
+
+No single model in this faculty-guided line dominates on all three
+metrics: 7A has best Kappa (0.7428), 7E has best Dice (0.7065) and
+best accuracy (0.6602). This suggests these three objectives may be in
+genuine tension for this architecture family, dataset size, and
+training budget -- consistent with the faculty''s own observation that
+"90% Dice and 80% accuracy should be treated as targets rather than
+guaranteed outcomes."
+
+LESSON: Combining multiple simultaneous architectural/loss changes
+(as in 7F and earlier 7D) makes it impossible to attribute results to
+specific components, unlike the clean, isolated 7E experiment. Future
+work should isolate one variable at a time, as the faculty explicitly
+recommended after 7D''s collapse.
