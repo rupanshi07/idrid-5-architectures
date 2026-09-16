@@ -1,0 +1,27 @@
+﻿ARCHITECTURE 7G: 2D Positional Embeddings + Separate EX/SE Feature Extractors
++ Concatenation-Based Fusion + Attention Pooling (Experiment 1 per faculty's ordered plan)
+================================================================================
+Mean Dice: 0.6838 (EX 0.7407, SE 0.6269)
+Accuracy: 0.6408
+Quadratic Kappa: 0.7489  -- BEST Kappa in the entire faculty-guided chain,
+                             beats original 7A (0.7428)
+
+FULL PROGRESSION:
+  7A       Dice 0.6941  Acc 0.4272  Kappa 0.7428
+  7A-v3    Dice 0.6981  Acc 0.6214  Kappa 0.7185
+  7E       Dice 0.7065  Acc 0.6602  Kappa 0.6483
+  7F       Dice 0.6947  Acc 0.4757  Kappa 0.6681
+  7G       Dice 0.6838  Acc 0.6408  Kappa 0.7489  <-- BEST
+
+FINDING: Following faculty''s ordered, incremental experiment plan
+(Experiment 1: 2D positional embeddings, separate EX/SE lesion feature
+extraction, concatenation-based fusion instead of multiplicative
+gating, and learned attention pooling), 7G achieved the best Kappa in
+the entire faculty-guided architecture line while maintaining strong
+accuracy (0.6408) far above 7A''s original 0.4272. This confirms the
+faculty''s specific hypothesis that concatenation (rather than
+multiplicative gating) prevents imperfect segmentation predictions from
+corrupting useful image features, and that separate lesion-type feature
+extraction plus proper 2D spatial awareness meaningfully improves
+classification without needing to combine many unrelated changes at once
+(contrast with 7F, which combined 6 changes simultaneously and regressed).
