@@ -1,0 +1,18 @@
+﻿ENSEMBLE v2: GAN (Architecture 5) + 7G (2D pos-embed, separate EX/SE, concat fusion)
+================================================================================
+Mean Dice: 0.7003 (EX 0.7731, SE 0.6275)
+Accuracy: 0.6602  (BEST accuracy across every model/ensemble in the project)
+Quadratic Kappa: 0.7547
+
+COMPARISON:
+  Ensemble v1 (GAN + original 7A):  Dice 0.7098, Acc 0.4854, Kappa 0.7730  <- best overall
+  Ensemble v2 (GAN + 7G):           Dice 0.7003, Acc 0.6602, Kappa 0.7547  <- best accuracy
+
+FINDING: Ensemble v2 does not beat Ensemble v1 on Dice or Kappa, likely
+because GAN and 7G already have individually similar, well-balanced
+performance profiles -- averaging two already-similar models tends to
+interpolate rather than correct complementary weaknesses, unlike GAN +
+original 7A (which had more different error patterns: 7A was
+individually weak on accuracy, 0.4272, while GAN was much stronger,
+0.5922). Ensemble v2 remains a strong, presentable alternative when
+accuracy is the priority metric.
