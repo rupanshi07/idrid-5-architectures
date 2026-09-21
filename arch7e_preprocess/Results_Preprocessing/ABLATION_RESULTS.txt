@@ -1,19 +1,37 @@
-﻿PREPROCESSING ABLATION STUDY (Architecture: 7G, same model/loss/schedule across all presets)
+﻿PREPROCESSING ABLATION STUDY -- COMPLETE RESULTS (Architecture: 7G, identical model/loss/schedule across all presets)
 ================================================================================
-Preset   Description                          Mean Dice   Accuracy   QWK
-P0       Baseline (current CLAHE only)        0.6875      0.5631     0.6839
-P1       + ROI / black-border crop            0.6975      0.6214     0.6669
+Preset  Description                    Mean Dice  EX Dice  SE Dice  Accuracy  QWK
+P0      Baseline (CLAHE only)          0.6875     0.7096   0.6654   0.5631    0.6839
+P1      + ROI crop                     0.6975     0.7219   0.6731   0.6214    0.6669
+P3      + illumination correction      0.7175*    0.7366   0.6984*  0.6019    0.6773
+P4      + green-channel CLAHE          0.6737     0.7061   0.6413   0.6699*   0.7412*
+P5      + mild sharpening              0.6913     0.7299   0.6526   0.6214    0.6300
 
-FINDING (P0 vs P1): Adding retinal ROI/black-border cropping improved
-Mean Dice by +0.010 and Accuracy by +0.058, while QWK decreased slightly
-(-0.017). This is a genuine, isolated finding -- ROI cropping removes
-irrelevant black border pixels, letting the encoder focus its
-representational capacity on actual retinal tissue, which appears to
-help both segmentation precision and classification exact-match
-accuracy, at a small cost to ordinal agreement.
+(* = best in category)
 
-Note: all P0/P1 comparisons use IDENTICAL architecture, loss functions,
-optimizer, learning rate schedule, freeze/unfreeze timing, random seed,
-train/val split, and checkpoint-selection criterion (best validation
-Kappa) -- ROI cropping is the ONLY variable changed, per faculty's
-explicit reproducibility checklist.
+KEY FINDINGS:
+1. Validation scores were systematically and severely inflated across
+   all presets (e.g. P3: val accuracy 0.90 vs real test accuracy 0.60;
+   P4: val Kappa 0.9356 vs real test Kappa 0.7412). This confirms a
+   consistent pattern throughout this project: validation drawn from
+   augmented training data cannot be trusted as a proxy for real
+   generalization -- only held-out test-set evaluation is reportable.
+
+2. No single preprocessing preset dominates all metrics -- there is a
+   genuine segmentation/classification tradeoff:
+   - Illumination correction (P3) best serves segmentation, especially
+     the weaker SE lesion type (+0.033 Dice vs baseline)
+   - Green-channel CLAHE (P4) best serves classification (+0.057 QWK
+     vs baseline), likely because green-channel contrast better
+     highlights the global retinal patterns relevant to DR severity
+     grading, even though it slightly weakens lesion boundary detail
+
+3. Sharpening (P5) was net negative on QWK, confirming the faculty''s
+   caution against over-processing: amplifying high-frequency detail
+   did not help lesion boundaries and instead introduced noise that
+   hurt ordinal classification agreement.
+
+RECOMMENDATION: If segmentation is the priority, use P3. If
+classification/DR grading is the priority, use P4. A combined
+P3+P4 pipeline (illumination correction + green-channel CLAHE together)
+would be a natural next ablation to test whether their benefits combine.
