@@ -1,37 +1,38 @@
-﻿PREPROCESSING ABLATION STUDY -- COMPLETE RESULTS (Architecture: 7G, identical model/loss/schedule across all presets)
+﻿PREPROCESSING ABLATION STUDY -- FINAL COMPLETE RESULTS (Architecture: 7G)
 ================================================================================
-Preset  Description                    Mean Dice  EX Dice  SE Dice  Accuracy  QWK
-P0      Baseline (CLAHE only)          0.6875     0.7096   0.6654   0.5631    0.6839
-P1      + ROI crop                     0.6975     0.7219   0.6731   0.6214    0.6669
-P3      + illumination correction      0.7175*    0.7366   0.6984*  0.6019    0.6773
-P4      + green-channel CLAHE          0.6737     0.7061   0.6413   0.6699*   0.7412*
-P5      + mild sharpening              0.6913     0.7299   0.6526   0.6214    0.6300
+Preset  Description                              Mean Dice  EX Dice  SE Dice  Accuracy  QWK
+P0      Baseline (CLAHE only)                    0.6875     0.7096   0.6654   0.5631    0.6839
+P1      + ROI crop                                0.6975     0.7219   0.6731   0.6214    0.6669
+P3      + illumination correction                 0.7175*    0.7366   0.6984*  0.6019    0.6773
+P4      + destructive green CLAHE                 0.6737     0.7061   0.6413   0.6699*   0.7412
+P5      + sharpening                              0.6913     0.7299   0.6526   0.6214    0.6300
+P6      illumination + non-destructive green      0.6769     0.7074   0.6463   0.6408    0.7111
+P7      P6 + ROI (full combined pipeline)         0.6645     0.7081   0.6210   0.6214    0.7582*
 
 (* = best in category)
 
-KEY FINDINGS:
-1. Validation scores were systematically and severely inflated across
-   all presets (e.g. P3: val accuracy 0.90 vs real test accuracy 0.60;
-   P4: val Kappa 0.9356 vs real test Kappa 0.7412). This confirms a
-   consistent pattern throughout this project: validation drawn from
-   augmented training data cannot be trusted as a proxy for real
-   generalization -- only held-out test-set evaluation is reportable.
+KEY FINDING: Combining ROI cropping, illumination correction, and
+non-destructive green-channel enhancement (P7) produces the BEST
+ordinal classification agreement (QWK 0.7582) of the entire study,
+but the WORST segmentation Dice (0.6645, below even baseline P0).
 
-2. No single preprocessing preset dominates all metrics -- there is a
-   genuine segmentation/classification tradeoff:
-   - Illumination correction (P3) best serves segmentation, especially
-     the weaker SE lesion type (+0.033 Dice vs baseline)
-   - Green-channel CLAHE (P4) best serves classification (+0.057 QWK
-     vs baseline), likely because green-channel contrast better
-     highlights the global retinal patterns relevant to DR severity
-     grading, even though it slightly weakens lesion boundary detail
+This demonstrates that these preprocessing techniques are NOT simply
+additive/complementary -- combining them shifts the model's learned
+representation toward features useful for global disease-severity
+judgment (favoring classification) at the expense of fine-grained
+pixel-level lesion boundary precision (hurting segmentation,
+particularly the already-weak SE lesion type). This is a genuine,
+non-trivial interaction effect between preprocessing steps, not simply
+"more preprocessing = better."
 
-3. Sharpening (P5) was net negative on QWK, confirming the faculty''s
-   caution against over-processing: amplifying high-frequency detail
-   did not help lesion boundaries and instead introduced noise that
-   hurt ordinal classification agreement.
-
-RECOMMENDATION: If segmentation is the priority, use P3. If
-classification/DR grading is the priority, use P4. A combined
-P3+P4 pipeline (illumination correction + green-channel CLAHE together)
-would be a natural next ablation to test whether their benefits combine.
+PRACTICAL RECOMMENDATION:
+- If segmentation quality is the priority: use P3 (illumination
+  correction alone, no green enhancement)
+- If classification/DR grading ordinal agreement is the priority: use
+  P7 (the full combined pipeline)
+- No single preprocessing configuration dominates both objectives
+  simultaneously -- this reflects a genuine task-level tradeoff, not an
+  implementation shortcoming, and is consistent with the broader
+  pattern seen throughout this project where architectural and
+  preprocessing choices repeatedly show a Dice/Kappa tension rather
+  than both improving together.

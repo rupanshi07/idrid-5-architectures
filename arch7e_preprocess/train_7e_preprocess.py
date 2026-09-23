@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import os
 import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
@@ -46,7 +46,7 @@ def compute_loss(seg_out, aux_outs, mask, seg_valid, cls_out, dr_grade, cls_vali
 
 def get_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--preset", required=True, choices=["P0", "P1", "P2a", "P2b", "P2c", "P3", "P4", "P5"])
+    p.add_argument("--preset", required=True, choices=["P0", "P1", "P2a", "P2b", "P2c", "P3", "P4", "P5", "P6", "P7"])
     p.add_argument("--seg_img_dir", required=True)
     p.add_argument("--seg_mask_dir", required=True)
     p.add_argument("--cls_img_dir", required=True)
